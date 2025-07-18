@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  # Meter Simulator - Simulation Mode
+  meter_simulator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: meter_simulator
+    environment:
+      - METER_MODE=simulation
+      - HOST_IP=localhost  # For simulation, connects to external simulator
+      - MQTT_SERVER=mqtt   # Points to your existing MQTT container
+      - MQTT_PORT=1883
+      - MQTT_METER_TOPIC_PREFIX=xcel_itron_5
+    restart: unless-stopped
+    profiles:
+      - simulation
+
+  # Meter Simulator - Real Mode
+  meter_real:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: meter_real
+    volumes:
+      - ./realMeter/certs:/app/realMeter/certs:ro
+    environment:
+      - METER_MODE=real
+      - METER_IP=${METER_IP}
+      - METER_PORT=${METER_PORT:-443}
+      - CERT_PATH=/app/realMeter/certs/.cert.pem
+      - KEY_PATH=/app/realMeter/certs/.key.pem
+      - MQTT_SERVER=mqtt   # Points to your existing MQTT container
+      - MQTT_PORT=1883
+      - MQTT_METER_TOPIC_PREFIX=xcel_itron_5
+    restart: unless-stopped
+    profiles:
+      - real_meter 

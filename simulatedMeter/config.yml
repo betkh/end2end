@@ -1,0 +1,49 @@
+# Publisher Output Configuration
+# Choose your preferred output level based on what you're doing
+
+# Output Levels:
+# - bare_minimum: Shows only message content and success/fail status
+# - detailed: Shows connection status, topic, and publishing details
+# - verbose: Shows all information including Docker environment, message IDs, etc.
+
+output_level: "bare_minimum"  # Options: "bare_minimum", "detailed", "verbose"
+
+# MQTT Configuration
+mqtt:
+  server: "localhost"  # Will be overridden by MQTT_SERVER env var
+  port: 1883          # Will be overridden by MQTT_PORT env var
+  topic_prefix: "xcel_itron_5"  # Will be overridden by MQTT_METER_TOPIC_PREFIX env var
+
+# Logging Configuration
+logging:
+  level: "INFO"  # Options: "DEBUG", "INFO", "WARNING", "ERROR"
+  format: "simple"  # Options: "simple", "detailed", "emoji"
+
+# Output Format Options
+formats:
+  bare_minimum:
+    show_connection: false
+    show_topic: false
+    show_message_id: false
+    show_docker_info: false
+    show_success_only: true
+    emoji: false
+    minimal_logging: true
+    
+  detailed:
+    show_connection: true
+    show_topic: true
+    show_message_id: false
+    show_docker_info: false
+    show_success_only: false
+    emoji: true
+    minimal_logging: false
+    
+  verbose:
+    show_connection: true
+    show_topic: true
+    show_message_id: true
+    show_docker_info: true
+    show_success_only: false
+    emoji: true
+    minimal_logging: false 
